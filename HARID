@@ -19,3 +19,40 @@ void createDirectory() {
     cin.ignore().get();
 }
 
+void changeDirectory() {
+    cout << "Please enter the name of the directory to switch to: ";
+    string dirName;
+    cin >> dirName;
+    cout << "Now in directory: C:\\Users\\UserName\\" << dirName << "\n";
+    cout << "Press Enter to proceed...\n";
+    cin.ignore().get();
+}
+
+int main() {
+    while (true) {
+        cout << "MAIN MENU\n";
+        cout << "1. Display Files\n";
+        cout << "2. Create Directory\n";
+        cout << "3. Change Directory\n";
+        cout << "4. Exit\n";
+        cout << "Choose an option: ";
+        int choice;
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                displayFiles();
+                break;
+            case 2:
+                createDirectory();
+                break;
+            case 3:
+                changeDirectory();
+                break;
+            case 4:
+                return 0;
+            default:
+                cout << "Invalid option! Please try again.\n";
+        }
+    }
+}
