@@ -1,58 +1,133 @@
 #include <iostream>
+#include <direct.h>
 #include <string>
 
 using namespace std;
 
-void displayFiles() {
-    cout << "Listing files in the current directory:\n";
-    cout << "file1.txt\nfile2.cpp\nreport.doc\nimage.png\n";
-    cout << "Press Enter to proceed...\n";
-    cin.ignore().get();
-}
-
-void createDirectory() {
-    cout << "Please enter the name for the new directory: ";
-    string dirName;
-    cin >> dirName;
-    cout << "Directory named '" << dirName << "' has been successfully created!\n";
-    cout << "Press Enter to proceed...\n";
-    cin.ignore().get();
-}
-
-void changeDirectory() {
-    cout << "Please enter the name of the directory to switch to: ";
-    string dirName;
-    cin >> dirName;
-    cout << "Now in directory: C:\\Users\\UserName\\" << dirName << "\n";
-    cout << "Press Enter to proceed...\n";
-    cin.ignore().get();
-}
+void display_files();
+void create_directory();
+void modify_directory();
 
 int main() {
+    int selection;
+    
     while (true) {
-        cout << "MAIN MENU\n";
-        cout << "1. Display Files\n";
-        cout << "2. Create Directory\n";
-        cout << "3. Change Directory\n";
-        cout << "4. Exit\n";
-        cout << "Choose an option: ";
-        int choice;
-        cin >> choice;
+        cout << "Main Menu:" << endl;
+        cout << "ALLAHUAKBAR\n";
+        cout << "1. Show List of Files\n";
+        cout << "2. Create New Folder\n";
+        cout << "3. Change Current Directory\n";
+        cout << "4. Exit Application\n";
+        cout << "Select Option: ";
+        cin >> selection;
 
-        switch (choice) {
+        switch (selection) {
             case 1:
-                displayFiles();
+                display_files();
                 break;
             case 2:
-                createDirectory();
+                create_directory();
                 break;
             case 3:
-                changeDirectory();
+                modify_directory();
                 break;
             case 4:
-                return 0;
+                return 0; 
             default:
-                cout << "Invalid option! Please try again.\n";
+                cout << "Invalid selection. Please try again.\n";
         }
+    }
+
+    return 0;
+}
+
+void display_files() {
+    int option;
+    
+    cout << "FILE LIST DETAILS:" << endl;
+    cout << "--------------------------------------\n" << endl;
+    cout << "1. Show All Files\n";
+    cout << "2. Show Files by Extension\n";
+    cout << "3. Show Files by Name\n";
+    cout << "Select Option: ";
+    cin >> option;
+
+   
+    switch (option) {
+        case 1:
+            cout << "Listing all files:\n";
+            system("dir");
+            break;
+        case 2: {
+            string extension;
+            cout << "Enter file extension: ";
+            cin >> extension;
+            system(("dir *." + extension).c_str());
+            break;
+        }
+        case 3: {
+            string name_pattern;
+            cout << "Enter file name pattern: ";
+            cin >> name_pattern;
+            system(("dir " + name_pattern).c_str());
+            break;
+        }
+        default:
+            cout << "Invalid selection. Please try again.\n";
+    }
+}
+
+void create_directory() {
+    string folder_name;
+    
+    cout << "Folder name: ";
+    cin >> folder_name;
+
+    if (_mkdir(folder_name.c_str()) == 0) {
+        cout << "Folder created successfully." << endl;
+    } else {
+        cout << "Error creating folder. It may already exist or be invalid." << endl;
+    }
+}
+
+void modify_directory() {
+    int action;
+    
+    cout << "Change Directory Options:" << endl;
+    cout << "1. Go one level up." << endl;
+    cout << "2. Go to the root directory." << endl;
+    cout << "3. Go to a specific directory provided by the user." << endl;
+    cout << "Select your option: ";
+    cin >> action;
+
+    
+    switch (action) {
+        case 1:
+            if (_chdir("..") == 0) {
+                cout << "Moved to parent directory." << endl;
+            } else {
+                cout << "Error moving to parent directory." << endl;
+            }
+            break;
+        case 2:
+            if (_chdir("\\") == 0) {
+                cout << "Moved to root directory." << endl;
+            } else {
+                cout << "Error moving to root directory." << endl;
+            }
+            break;
+        case 3: {
+            string target_dir;
+            cout << "Directory name: ";
+            cin >> target_dir;
+            if (_chdir(target_dir.c_str()) == 0) {
+                cout << "Directory changed successfully." << endl;
+            } else {
+                cout << "Error changing directory. It may not exist." << endl;
+            }
+            break;
+        }
+        default:
+            cout << "Invalid selection. Please try again." << endl;
     }
 }
